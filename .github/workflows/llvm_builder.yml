@@ -21,7 +21,7 @@ on:
 
 jobs:
   build_llvm:
-    name: llvm-${{matrix.llvm_version}}-${{matrix.target_arch}}-${{matrix.target_bits}}-${{matrix.target_os}}
+    name: llvm-${{matrix.llvm_version}}-${{matrix.llvm_targets_to_build}}-${{matrix.target_arch}}-${{matrix.target_bits}}-${{matrix.target_os}}
     runs-on: ${{matrix.host_os}}
     env:
       CC: ${{matrix.cc}}
@@ -35,6 +35,9 @@ jobs:
         target_bits: [32, 64]
         target_os: [windows, linux, osx]
         llvm_version: [10, 11, 12]
+        llvm_targets_to_build:
+          - "X86;ARM;NVPTX;AArch64;Mips;PowerPC;Hexagon;WebAssembly"
+          - ""
         include:
           - llvm_version: 10
             llvm_branch: release/10.x
@@ -281,7 +284,7 @@ jobs:
             -D LLVM_ENABLE_PROJECTS="clang;lld" \
             -D LLVM_ENABLE_RTTI=ON \
             -D LLVM_ENABLE_TERMINFO=OFF \
-            -D LLVM_TARGETS_TO_BUILD="X86;ARM;NVPTX;AArch64;Mips;PowerPC;Hexagon;WebAssembly" \
+            -D LLVM_TARGETS_TO_BUILD="${{matrix.llvm_targets_to_build}}" \
             -G "${CMAKE_GEN}" \
             ${EXTRA_CMAKE_FLAGS} \
             -B "${LLVM_BUILD_DIR}" \

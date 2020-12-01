@@ -36,7 +36,7 @@ CodeGen_Hexagon::CodeGen_Hexagon(Target t)
     : CodeGen_Posix(t) {
 #if !defined(WITH_HEXAGON)
     user_error << "hexagon not enabled for this build of Halide.\n";
-#endif
+#else
     user_assert(llvm_Hexagon_enabled)
         << "llvm build not configured with Hexagon target enabled.\n";
     if (target.has_feature(Halide::Target::HVX_v66)) {
@@ -48,6 +48,7 @@ CodeGen_Hexagon::CodeGen_Hexagon(Target t)
     }
     user_assert(target.has_feature(Target::HVX))
         << "Creating a Codegen target for Hexagon without the hvx target feature.\n";
+#endif
 }
 
 #ifdef WITH_HEXAGON
