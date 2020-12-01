@@ -16,6 +16,8 @@ public:
     /** Create a Hexagon code generator for the given Hexagon target. */
     CodeGen_Hexagon(Target);
 
+#ifdef WITH_HEXAGON
+
 protected:
     void compile_func(const LoweredFunc &f,
                       const std::string &simple_name, const std::string &extern_name) override;
@@ -107,6 +109,8 @@ private:
 
     /** Generate a LUT (8/16 bit, max_index < 256) lookup using vlut instructions. */
     llvm::Value *vlut256(llvm::Value *lut, llvm::Value *indices, int min_index = 0, int max_index = 255);
+
+#endif // WITH_HEXAGON
 };
 
 }  // namespace Internal

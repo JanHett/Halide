@@ -50,6 +50,7 @@ CodeGen_Hexagon::CodeGen_Hexagon(Target t)
         << "Creating a Codegen target for Hexagon without the hvx target feature.\n";
 }
 
+#ifdef WITH_HEXAGON
 namespace {
 
 Stmt call_halide_qurt_hvx_lock(const Target &target) {
@@ -2254,6 +2255,8 @@ void CodeGen_Hexagon::visit(const Allocate *alloc) {
         CodeGen_Posix::visit(alloc);
     }
 }
+
+#endif // WITH_HEXAGON
 
 }  // namespace Internal
 }  // namespace Halide
