@@ -1762,6 +1762,8 @@ Value *CodeGen_Hexagon::call_intrin(llvm::Type *result_type, const string &name,
                        get_llvm_function_name(fn), std::move(args));
 }
 
+#endif
+
 string CodeGen_Hexagon::mcpu() const {
     if (target.has_feature(Halide::Target::HVX_v66)) {
         return "hexagonv66";
@@ -1786,6 +1788,8 @@ bool CodeGen_Hexagon::use_soft_float_abi() const {
 int CodeGen_Hexagon::native_vector_bits() const {
     return 128 * 8;
 }
+
+#ifdef WITH_HEXAGON
 
 namespace {
 
@@ -2257,7 +2261,7 @@ void CodeGen_Hexagon::visit(const Allocate *alloc) {
     }
 }
 
-#endif // WITH_HEXAGON
+#endif  // WITH_HEXAGON
 
 }  // namespace Internal
 }  // namespace Halide

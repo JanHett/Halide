@@ -23,12 +23,15 @@ protected:
                       const std::string &simple_name, const std::string &extern_name) override;
 
     void init_module() override;
-
+#endif
     std::string mcpu() const override;
     std::string mattrs() const override;
+#ifdef WITH_HEXAGON
     int isa_version;
+#endif
     bool use_soft_float_abi() const override;
     int native_vector_bits() const override;
+#ifdef WITH_HEXAGON
 
     llvm::Function *define_hvx_intrinsic(llvm::Function *intrin, Type ret_ty,
                                          const std::string &name,
@@ -50,12 +53,13 @@ protected:
     void visit(const Select *) override;
     void visit(const Allocate *) override;
     ///@}
-
+#endif
     /** We ask for an extra vector on each allocation to enable fast
      * clamped ramp loads. */
     int allocation_padding(Type type) const override {
         return CodeGen_Posix::allocation_padding(type) + native_vector_bits() / 8;
     }
+#ifdef WITH_HEXAGON
 
     /** Call an LLVM intrinsic, potentially casting the operands to
      * match the type of the function. */
@@ -110,7 +114,7 @@ private:
     /** Generate a LUT (8/16 bit, max_index < 256) lookup using vlut instructions. */
     llvm::Value *vlut256(llvm::Value *lut, llvm::Value *indices, int min_index = 0, int max_index = 255);
 
-#endif // WITH_HEXAGON
+#endif  // WITH_HEXAGON
 };
 
 }  // namespace Internal
