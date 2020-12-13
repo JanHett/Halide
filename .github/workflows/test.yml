@@ -57,9 +57,7 @@ jobs:
         target_bits: [32, 64]
         target_os: [linux, osx, windows]
         llvm_version: [12]
-        llvm_targets_to_build:
-          - "X86;ARM;NVPTX;AArch64;Mips;PowerPC;Hexagon;WebAssembly"
-          - ""
+        llvm_enabled_targets: ["all-targets", "no-targets"]
         build_tool: [cmake_shared]
         # llvm_version: [10, 11, 12]  # TODO
         # build_tool: [cmake_shared, make]  # TODO
@@ -294,7 +292,7 @@ jobs:
     - name: Install LLVM
       shell: bash
       run: |
-        LLVM_ID="llvm-${{matrix.llvm_version}}-${{matrix.llvm_targets_to_build}}-${{matrix.target_arch}}-${{matrix.target_bits}}-${{matrix.target_os}}"
+        LLVM_ID="llvm-${{matrix.llvm_version}}-${{matrix.llvm_enabled_targets}}-${{matrix.target_arch}}-${{matrix.target_bits}}-${{matrix.target_os}}"
 
         curl \
           --user llvm_user:${{secrets.LLVM_USER_PASSWORD}} \
